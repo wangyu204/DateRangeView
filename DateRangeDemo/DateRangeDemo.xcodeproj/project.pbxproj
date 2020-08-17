@@ -12,7 +12,7 @@
 		A56D93F5209AF3EE00C86A46 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A56D93F4209AF3EE00C86A46 /* Assets.xcassets */; };
 		A56D93FB209AF3EE00C86A46 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A56D93FA209AF3EE00C86A46 /* main.m */; };
 		A56D9403209AF52300C86A46 /* BaseNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = A56D9402209AF52300C86A46 /* BaseNavigationController.m */; };
-		A56D9407209AF78600C86A46 /* ZXDateRangePickView.m in Sources */ = {isa = PBXBuildFile; fileRef = A56D9406209AF78600C86A46 /* ZXDateRangePickView.m */; };
+		A56D9407209AF78600C86A46 /* HuDateRangePickView.m in Sources */ = {isa = PBXBuildFile; fileRef = A56D9406209AF78600C86A46 /* HuDateRangePickView.m */; };
 		A56D940A209AF8A800C86A46 /* UIView+DQExtention.m in Sources */ = {isa = PBXBuildFile; fileRef = A56D9409209AF8A800C86A46 /* UIView+DQExtention.m */; };
 /* End PBXBuildFile section */
 
@@ -28,8 +28,8 @@
 		A56D9401209AF52300C86A46 /* BaseNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseNavigationController.h; sourceTree = "<group>"; };
 		A56D9402209AF52300C86A46 /* BaseNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseNavigationController.m; sourceTree = "<group>"; };
 		A56D9404209AF58400C86A46 /* Defind.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Defind.h; sourceTree = "<group>"; };
-		A56D9405209AF78600C86A46 /* ZXDateRangePickView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZXDateRangePickView.h; sourceTree = "<group>"; };
-		A56D9406209AF78600C86A46 /* ZXDateRangePickView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZXDateRangePickView.m; sourceTree = "<group>"; };
+		A56D9405209AF78600C86A46 /* HuDateRangePickView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HuDateRangePickView.h; sourceTree = "<group>"; };
+		A56D9406209AF78600C86A46 /* HuDateRangePickView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HuDateRangePickView.m; sourceTree = "<group>"; };
 		A56D9408209AF8A800C86A46 /* UIView+DQExtention.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+DQExtention.h"; sourceTree = "<group>"; };
 		A56D9409209AF8A800C86A46 /* UIView+DQExtention.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+DQExtention.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -70,8 +70,8 @@
 				A56D9402209AF52300C86A46 /* BaseNavigationController.m */,
 				A56D93EE209AF3EC00C86A46 /* ViewController.h */,
 				A56D93EF209AF3EC00C86A46 /* ViewController.m */,
-				A56D9405209AF78600C86A46 /* ZXDateRangePickView.h */,
-				A56D9406209AF78600C86A46 /* ZXDateRangePickView.m */,
+				A56D9405209AF78600C86A46 /* HuDateRangePickView.h */,
+				A56D9406209AF78600C86A46 /* HuDateRangePickView.m */,
 				A56D9404209AF58400C86A46 /* Defind.h */,
 				A56D9408209AF8A800C86A46 /* UIView+DQExtention.h */,
 				A56D9409209AF8A800C86A46 /* UIView+DQExtention.m */,
@@ -151,7 +151,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A56D9403209AF52300C86A46 /* BaseNavigationController.m in Sources */,
-				A56D9407209AF78600C86A46 /* ZXDateRangePickView.m in Sources */,
+				A56D9407209AF78600C86A46 /* HuDateRangePickView.m in Sources */,
 				A56D940A209AF8A800C86A46 /* UIView+DQExtention.m in Sources */,
 				A56D93F0209AF3EC00C86A46 /* ViewController.m in Sources */,
 				A56D93FB209AF3EE00C86A46 /* main.m in Sources */,

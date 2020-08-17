@@ -11,7 +11,7 @@
 #define XGScreenWidth XGScreenBounds.size.width
 #define XGScreenHeight XGScreenBounds.size.height
 
-#import "ZXDateRangePickView.h"
+#import "HuDateRangePickView.h"
 #import "Defind.h"
 #import "UIView+DQExtention.h"
 
@@ -19,7 +19,7 @@ CGFloat pickerViewH = 210;
 CGFloat titleViewH = 80;
 CGFloat bottomViewH = 210+80;
 
-@interface ZXDateRangePickView()<UIPickerViewDelegate , UIPickerViewDataSource>
+@interface HuDateRangePickView()<UIPickerViewDelegate , UIPickerViewDataSource>
 
 @property (strong, nonatomic)UIView *bottomView;
 @property (strong, nonatomic)UIView *titleView;
@@ -41,7 +41,7 @@ CGFloat bottomViewH = 210+80;
 
 @end
 
-@implementation ZXDateRangePickView
+@implementation HuDateRangePickView
 
 
 - (instancetype)initWithFrame:(CGRect)frame

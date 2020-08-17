@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ZXDateRangePickView : UIView
+@interface HuDateRangePickView : UIView
 
 /** 取消按钮回调*/
 @property (strong, nonatomic) void(^DidCanceBlock)();

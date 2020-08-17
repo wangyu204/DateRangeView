@@ -8,11 +8,11 @@
 
 #import "ViewController.h"
 #import "Defind.h"
-#import "ZXDateRangePickView.h"
+#import "HuDateRangePickView.h"
 
 @interface ViewController ()
 
-@property (strong, nonatomic)ZXDateRangePickView *dateRangePickView;
+@property (strong, nonatomic)HuDateRangePickView *dateRangePickView;
 
 @end
 
@@ -26,7 +26,7 @@
 
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     if (!self.dateRangePickView) {
-        self.dateRangePickView = [[ZXDateRangePickView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+        self.dateRangePickView = [[HuDateRangePickView alloc] initWithFrame:[UIScreen mainScreen].bounds];
     }
     [self.dateRangePickView showViewWithBeginDate:nil endDate:nil];
     //确定按钮
