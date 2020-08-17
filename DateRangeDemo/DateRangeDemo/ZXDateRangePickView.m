@@ -5,19 +5,11 @@
 //  Created by dengqi on 2018/5/3.
 //  Copyright © 2018年 http://www.cnblogs.com/justqi/. All rights reserved.
 //
-
-#define MonthsOfEachYear 12 //每年12个月
-#define IsThirtyOneDays(month) \
-(month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12)
-
-#define IsThirtyDays(month) (month == 4 || month == 6 ||month == 9 || month == 11)
 #define XGButtonWidth         60.0
-#define TopBarHeight          44.0
-//#define PickerHeight          216.0
+
 #define XGScreenBounds [UIScreen mainScreen].bounds
 #define XGScreenWidth XGScreenBounds.size.width
 #define XGScreenHeight XGScreenBounds.size.height
-#define XGViewHeight CGRectGetHeight(XGScreenBounds) - 44 - 20 // 去掉导航条的高度
 
 #import "ZXDateRangePickView.h"
 #import "Defind.h"
@@ -35,21 +27,17 @@ CGFloat bottomViewH = 210+80;
 @property (strong, nonatomic)UIPickerView *pickerViewLeft;
 @property (strong, nonatomic)UIPickerView *pickerViewRight;
 
-@property (strong, nonatomic) NSMutableArray        *yearOneArr;    //年份列表_起
-@property (strong, nonatomic) NSMutableArray        *montOnehArr;   //月份列表_起
-@property (strong, nonatomic) NSMutableArray        *yearTwoArr;    //年份列表_止
-@property (strong, nonatomic) NSMutableArray        *montTwohArr;   //月份列表_止
+@property (strong, nonatomic) NSMutableArray        *hourOneArr;    //年份列表_起
+@property (strong, nonatomic) NSMutableArray        *minuteOnehArr;   //月份列表_起
+@property (strong, nonatomic) NSMutableArray        *hourTwoArr;    //年份列表_止
+@property (strong, nonatomic) NSMutableArray        *minuteTwohArr;   //月份列表_止
 
-@property (strong, nonatomic)NSMutableArray *days;//每个月的天数_起
-@property (strong, nonatomic)NSMutableArray *daysTwo;//每个月的天数_止
+@property (strong, nonatomic) NSString              *hourOneStr;    //年份_起
+@property (strong, nonatomic) NSString              *minuteOneStr;    //月份_起
 
+@property (strong, nonatomic) NSString              *hourTwoStr;    //年份_止
+@property (strong, nonatomic) NSString              *minuteTwoStr;    //月份_止
 
-@property (strong, nonatomic) NSString              *yearOneStr;    //年份_起
-@property (strong, nonatomic) NSString              *montOneStr;    //月份_起
-@property (strong, nonatomic) NSString              *dayOneStr;    //日_起
-@property (strong, nonatomic) NSString              *yearTwoStr;    //年份_止
-@property (strong, nonatomic) NSString              *montTwoStr;    //月份_止
-@property (strong, nonatomic) NSString              *dayTwoStr;    //日_止
 
 @end
 
@@ -70,10 +58,10 @@ CGFloat bottomViewH = 210+80;
 //确认按钮，返回时间
 -(void)sureBtnClick:(UIButton *)button{
     if (self.DidSelectDateBlock) {
-        NSString *beginStr = [NSString stringWithFormat:@"%@-%@-%@",_yearOneStr,_montOneStr,_dayOneStr];
-        NSString *endStr = [NSString stringWithFormat:@"%@-%@-%@",_yearTwoStr,_montTwoStr,_dayTwoStr];
+        NSString *beginStr = [NSString stringWithFormat:@"%@:%@",_hourOneStr,_minuteOneStr];
+        NSString *endStr = [NSString stringWithFormat:@"%@:%@",_hourTwoStr,_minuteTwoStr];
         
-        if ([[NSString stringWithFormat:@"%@%@%@",_yearOneStr,_montOneStr,_dayOneStr] intValue]>[[NSString stringWithFormat:@"%@%@%@",_yearTwoStr,_montTwoStr,_dayTwoStr] intValue]) {
+        if ([[NSString stringWithFormat:@"%@%@",_hourOneStr,_minuteOneStr] intValue]>[[NSString stringWithFormat:@"%@%@",_hourTwoStr,_minuteTwoStr] intValue]) {
             endStr = beginStr;
             NSLog(@"结束时间小于开始时间,将结束时间==开始时间");
         }
@@ -106,23 +94,17 @@ CGFloat bottomViewH = 210+80;
         [subView removeFromSuperview];
     }
     
-    _yearOneStr = @"";
-    _montOneStr = @"";
-    _dayOneStr = @"";
-    _yearTwoStr = @"";
-    _montTwoStr = @"";
-    _dayTwoStr = @"";
+    _hourOneStr = @"";
+    _minuteOneStr = @"";
+    _hourTwoStr = @"";
+    _minuteTwoStr = @"";
     
-    _yearOneArr = nil;
-    _montOnehArr = nil;
-    _yearTwoArr = nil;
-    _montTwohArr = nil;
-    _daysTwo = nil;
-    _days = nil;
+    _hourOneArr = nil;
+    _minuteOnehArr = nil;
+    _hourTwoArr = nil;
+    _minuteTwohArr = nil;
     
 }
-
-
 
 // 显示view(此方法是加载在window上 ,遮住导航条)
 - (void)showViewWithBeginDate:(NSDate *)beginDate endDate:(NSDate *)endDate{
@@ -132,19 +114,17 @@ CGFloat bottomViewH = 210+80;
     if (!beginDate) {
         beginDate = [NSDate date];
     }
-    NSDateComponents *componentBegin = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:beginDate];
-    _yearOneStr = [NSString stringWithFormat:@"%.4d",(int)componentBegin.year];
-    _montOneStr = [NSString stringWithFormat:@"%.2d",(int)componentBegin.month];
-    _dayOneStr = [NSString stringWithFormat:@"%.2d",(int)componentBegin.day];
+    NSDateComponents *componentBegin = [calendar components:NSCalendarUnitHour|NSCalendarUnitMinute fromDate:beginDate];
+    _hourOneStr = [NSString stringWithFormat:@"%.2d",(int)componentBegin.hour];
+    _minuteOneStr = [NSString stringWithFormat:@"%.2d",(int)componentBegin.minute];
     
     
     if (!endDate) {
         endDate = [NSDate date];
     }
-    NSDateComponents *componentEnd = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:endDate];
-    _yearTwoStr = [NSString stringWithFormat:@"%.4d",(int)componentEnd.year];
-    _montTwoStr = [NSString stringWithFormat:@"%.2d",(int)componentEnd.month];
-    _dayTwoStr = [NSString stringWithFormat:@"%.2d",(int)componentEnd.day];
+    NSDateComponents *componentEnd = [calendar components:NSCalendarUnitHour|NSCalendarUnitMinute fromDate:endDate];
+    _hourTwoStr = [NSString stringWithFormat:@"%.2d",(int)componentEnd.hour];
+    _minuteTwoStr = [NSString stringWithFormat:@"%.2d",(int)componentEnd.minute];
     
     [self initData];
     [self addSubViews];
@@ -203,9 +183,9 @@ CGFloat bottomViewH = 210+80;
     
     
     
-    UILabel *leftLB = [self labelWithCenterText:@"开始日期" color:UIColorFromRGB(0x333333) font:[UIFont systemFontOfSize:15.0]];
+    UILabel *leftLB = [self labelWithCenterText:@"开始时间" color:UIColorFromRGB(0x333333) font:[UIFont systemFontOfSize:15.0]];
     leftLB.frame = CGRectMake(0, 60, ScreenWidth/2, 20);
-    UILabel *rightLB = [self labelWithCenterText:@"结束日期" color:UIColorFromRGB(0x333333) font:[UIFont systemFontOfSize:15.0]];
+    UILabel *rightLB = [self labelWithCenterText:@"结束时间" color:UIColorFromRGB(0x333333) font:[UIFont systemFontOfSize:15.0]];
     rightLB.frame = CGRectMake(ScreenWidth/2, 60, ScreenWidth/2, 20);
     [self.bottomView addSubview:leftLB];
     [self.bottomView addSubview:rightLB];
@@ -228,51 +208,46 @@ CGFloat bottomViewH = 210+80;
     
     //左侧
     //年
-    NSInteger yearIndex1 = [self.yearOneArr indexOfObject:[NSString stringWithFormat:@"%@",_yearOneStr]];
+    NSInteger yearIndex1 = [self.hourOneArr indexOfObject:[NSString stringWithFormat:@"%@",_hourOneStr]];
     [self.pickerViewLeft selectRow:yearIndex1 inComponent:0 animated:NO];
     //月
-    NSInteger monthIndex1 = [self.montOnehArr indexOfObject:[NSString stringWithFormat:@"%@",_montOneStr]];
+    NSInteger monthIndex1 = [self.minuteOnehArr indexOfObject:[NSString stringWithFormat:@"%@",_minuteOneStr]];
     [self.pickerViewLeft selectRow:monthIndex1 inComponent:1 animated:NO];
-    //日
-    NSInteger dayIndex1 = [self.days indexOfObject:[NSString stringWithFormat:@"%@",_dayOneStr]];
-    [self.pickerViewLeft selectRow:dayIndex1 inComponent:2 animated:NO];
+    
     
     [self setupSelectTextColor:self.pickerViewLeft];
     
     
     //右侧
     //年
-    NSInteger yearIndex2 = [self.yearTwoArr indexOfObject:[NSString stringWithFormat:@"%@",_yearTwoStr]];
+    NSInteger yearIndex2 = [self.hourTwoArr indexOfObject:[NSString stringWithFormat:@"%@",_hourTwoStr]];
     [self.pickerViewRight selectRow:yearIndex2 inComponent:0 animated:NO];
     //月
-    NSInteger monthIndex2 = [self.montTwohArr indexOfObject:[NSString stringWithFormat:@"%@",_montTwoStr]];
+    NSInteger monthIndex2 = [self.minuteTwohArr indexOfObject:[NSString stringWithFormat:@"%@",_minuteTwoStr]];
     [self.pickerViewRight selectRow:monthIndex2 inComponent:1 animated:NO];
-    //日
-    NSInteger dayIndex2 = [self.daysTwo indexOfObject:[NSString stringWithFormat:@"%@",_dayTwoStr]];
-    [self.pickerViewRight selectRow:dayIndex2 inComponent:2 animated:NO];
+    
     [self setupSelectTextColor:self.pickerViewRight];
     
 }
 
 -(void)setupSelectTextColor:(UIPickerView *)pickerView{
-    NSInteger rowZero,rowOne,rowTwo;
+    NSInteger rowZero,rowOne;
     rowZero  = [pickerView selectedRowInComponent:0];
     rowOne   = [pickerView selectedRowInComponent:1];
-    rowTwo   = [pickerView selectedRowInComponent:2];
     
     //从选择的Row取得View
-    UIView *viewZero,*viewOne,*viewTwo;
+    UIView *viewZero,*viewOne;
     viewZero  = [pickerView viewForRow:rowZero   forComponent:0];
     viewOne   = [pickerView viewForRow:rowOne    forComponent:1];
-    viewTwo   = [pickerView viewForRow:rowTwo    forComponent:2];
+    
     //从取得的View取得上面UILabel
-    UILabel *labZero,*labOne,*labTwo;
+    UILabel *labZero,*labOne;
     labZero  = (UILabel *)[viewZero   viewWithTag:1000];
     labOne   = (UILabel *)[viewOne    viewWithTag:1000];
-    labTwo   = (UILabel *)[viewTwo    viewWithTag:1000];
+    
     labZero.textColor = UIColorFromRGB(0x3ea5eb);
     labOne.textColor = UIColorFromRGB(0x3ea5eb);
-    labTwo.textColor = UIColorFromRGB(0x3ea5eb);
+    
 }
 
 
@@ -284,19 +259,16 @@ CGFloat bottomViewH = 210+80;
     
     if (pickerView.tag == 2017072601) {
         
-        NSInteger rowZero,rowOne,rowTwo;
+        NSInteger rowZero,rowOne;
         rowZero  = [pickerView selectedRowInComponent:0];
         rowOne   = [pickerView selectedRowInComponent:1];
         
-        _yearOneStr = _yearOneArr[rowZero];
-        _montOneStr = _montOnehArr[rowOne];
+        _hourOneStr = _hourOneArr[rowZero];
+        _minuteOneStr = _minuteOnehArr[rowOne];
         
-        _days = [self p_caculateDaysFromMonth:[_montOneStr intValue] year:[_yearOneStr intValue]];
         [self.pickerViewLeft reloadAllComponents];
         
-        rowTwo  = [pickerView selectedRowInComponent:2];
-        _dayOneStr = _days[rowTwo];
-        NSLog(@"%@--%@--%@",_yearOneStr,_montOneStr,_dayOneStr);
+        NSLog(@"%@--%@",_hourOneStr,_minuteOneStr);
         
         [self setupSelectTextColor:self.pickerViewLeft];
         
@@ -304,19 +276,17 @@ CGFloat bottomViewH = 210+80;
         
     }else{
         //取得选择的Row
-        NSInteger rowZero,rowOne,rowTwo;
+        NSInteger rowZero,rowOne;
         rowZero  = [pickerView selectedRowInComponent:0];
         rowOne   = [pickerView selectedRowInComponent:1];
         
-        _yearTwoStr = _yearTwoArr[rowZero];
-        _montTwoStr = _montTwohArr[rowOne];
+        _hourTwoStr = _hourTwoArr[rowZero];
+        _minuteTwoStr = _minuteTwohArr[rowOne];
         
-        _daysTwo = [self p_caculateDaysFromMonth:[_montTwoStr intValue] year:[_yearTwoStr intValue]];
         [self.pickerViewRight reloadAllComponents];
         
-        rowTwo   = [pickerView selectedRowInComponent:2];
-        _dayTwoStr = _daysTwo[rowTwo];
-        NSLog(@"%@--%@--%@",_yearTwoStr,_montTwoStr,_dayTwoStr);
+        
+        NSLog(@"%@--%@",_hourTwoStr,_minuteTwoStr);
         
         [self setupSelectTextColor:self.pickerViewRight];
     }
@@ -326,7 +296,7 @@ CGFloat bottomViewH = 210+80;
 // 返回多少列
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
-    return 3;
+    return 2;
     
 }
 
@@ -335,19 +305,15 @@ CGFloat bottomViewH = 210+80;
 {
     if (pickerView.tag == 2017072601) {
         if (component==0) {//年
-            return self.yearOneArr.count;
-        }else if(component==1){//月
-            return self.montOnehArr.count;
-        }else{//日
-            return self.days.count;
+            return self.hourOneArr.count;
+        }else{//月
+            return self.minuteOnehArr.count;
         }
     }else{
         if (component==0) {//年
-            return self.yearTwoArr.count;
-        }else if(component==1){//月
-            return self.montTwohArr.count;
-        }else{//日
-            return self.daysTwo.count;
+            return self.hourTwoArr.count;
+        }else{//月
+            return self.minuteTwohArr.count;
         }
     }
     
@@ -372,27 +338,15 @@ CGFloat bottomViewH = 210+80;
     genderLabel.textColor = UIColorFromRGB(0x333333);
     if (pickerView.tag == 2017072601) {
         if (component==0) {//年
-            genderLabel.text = self.yearOneArr[row];
+            genderLabel.text = self.hourOneArr[row];
         }else if(component==1){//月
-            genderLabel.text =self.montOnehArr[row];
-        }else{//日
-            if(row>=self.days.count){
-                _days = [self p_caculateDaysFromMonth:[_montOneStr intValue] year:[_yearOneStr intValue]];
-                [self.pickerViewLeft reloadAllComponents];
-            }
-            genderLabel.text = self.days[row];
+            genderLabel.text =self.minuteOnehArr[row];
         }
     }else{
         if (component==0) {//年
-            genderLabel.text = self.yearTwoArr[row];
+            genderLabel.text = self.hourTwoArr[row];
         }else if(component==1){//月
-            genderLabel.text = self.montTwohArr[row];
-        }else{//日
-            if(row>=self.daysTwo.count){
-                _daysTwo = [self p_caculateDaysFromMonth:[_yearTwoStr intValue] year:[_yearTwoStr intValue]];
-                [self.pickerViewRight reloadAllComponents];
-            }
-            genderLabel.text = self.daysTwo[row];
+            genderLabel.text = self.minuteTwohArr[row];
         }
     }
     
@@ -409,26 +363,22 @@ CGFloat bottomViewH = 210+80;
 
 - (void)initData{
     
-    if(!_yearOneArr){
-        _yearOneArr = [self yearArrayAction];
+    if(!_hourOneArr){
+        _hourOneArr = [self hourArrayAction];
     }
-    if(!_montOnehArr){
-        _montOnehArr = [[NSMutableArray alloc] initWithObjects:@"01",@"02",@"03",@"04",@"05",@"06",@"07",@"08",@"09",@"10",@"11",@"12",nil];
-    }
-    if (!_days) {
-        _days = [self p_caculateDaysFromMonth:[_montOneStr intValue] year:[_yearOneStr intValue]];
+    if(!_minuteOnehArr){
+        _minuteOnehArr = [self minuteArrayAction];
     }
     
     
-    if(!_yearTwoArr){
-        _yearTwoArr = [self yearArrayAction];
+    
+    if(!_hourTwoArr){
+        _hourTwoArr = [self hourArrayAction];
     }
-    if(!_montTwohArr){
-        _montTwohArr = [[NSMutableArray alloc] initWithObjects:@"01",@"02",@"03",@"04",@"05",@"06",@"07",@"08",@"09",@"10",@"11",@"12",nil];
+    if(!_minuteTwohArr){
+        _minuteTwohArr = [self minuteArrayAction];
     }
-    if (!_daysTwo) {
-        _daysTwo = [self p_caculateDaysFromMonth:[_montTwoStr intValue] year:[_yearTwoStr intValue]];
-    }
+    
     
 }
 
@@ -459,60 +409,22 @@ CGFloat bottomViewH = 210+80;
 }
 
 //年份范围
--(NSMutableArray *)yearArrayAction{
-    NSString *yearStr = [self cStringFromTimestamp:[NSString stringWithFormat:@"%ld",[self cNowTimestamp]]];
-    NSInteger endYearInt = [yearStr integerValue];
+-(NSMutableArray *)hourArrayAction{
     NSMutableArray *tempArry = [[NSMutableArray alloc] init];
-    for (int i = 1979; i <= endYearInt ; i ++) {
-        [tempArry addObject:[NSString stringWithFormat:@"%d",i]];
+    for (int i = 0; i <= 23 ; i ++) {
+        [tempArry addObject:[NSString stringWithFormat:@"%.2d",i]];
     }
     return tempArry;
 }
 
+-(NSMutableArray *)minuteArrayAction{
+    NSMutableArray *tempArry = [[NSMutableArray alloc] init];
+    for (int i = 0; i <= 59 ; i ++) {
+        [tempArry addObject:[NSString stringWithFormat:@"%.2d",i]];
+    }
+    return tempArry;
+}
 
-
-/*************根据年月获取天数数组--start*******************/
-- (NSMutableArray *)p_caculateDaysFromMonth:(int)month year:(int)year {
-    _days = [[NSMutableArray alloc]init];
-    if (_days && _days.count) {
-        [_days removeAllObjects];
-    }
-    int days = 31;
-    if ([self daysOfEveryMonth:month]>=30) {
-        days = [self daysOfEveryMonth:month];
-    }else {
-        days = [self p_caculateDaysOfFebaryFromYear:year];
-    }
-    for (int i = 1; i<= days; i++) {
-        //        [_days addObject:[NSString stringWithFormat:@"%.2d%@",i,@"日"]];
-        [_days addObject:[NSString stringWithFormat:@"%.2d",i]];
-    }
-    return _days;
-}
-- (int)p_caculateDaysOfFebaryFromYear:(int)year {
-    int temYear = year;
-    if (year) {
-        
-    }else{
-        NSCalendar *calendar = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
-        NSDateComponents *component = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth fromDate:[NSDate date]];
-        temYear = (int)component.year;
-    }
-    
-    if (temYear %4 == 0) {
-        return 29;
-    }
-    return 28;
-}
-- (int)daysOfEveryMonth:(int)month {
-    int days = 0;
-    if (IsThirtyOneDays(month)) {
-        days = 31;
-    }else if (IsThirtyDays(month)) {
-        days = 30;
-    }
-    return days;
-}
 /*************根据年月获取天数数组--end*******************/
 
 - (UIView *)bottomView {
@@ -561,8 +473,6 @@ CGFloat bottomViewH = 210+80;
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     [self dismissPickerView];
 }
-
-
 
 @end
 
